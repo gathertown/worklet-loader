@@ -18,3 +18,4 @@ Thumbs.db
 # Yarn
 .pnp.*
 .yarn/install-state.gz
+.yarn/plugins

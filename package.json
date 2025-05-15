@@ -14,7 +14,7 @@
     "dist"
   ],
   "scripts": {
-    "start": "yarn run build -- -w",
+    "start": "yarn run build -w",
     "build": "cross-env NODE_ENV=production babel src -d dist --ignore 'src/**/*.test.js' --copy-files",
     "clean": "rm -rf dist",
     "lint": "eslint --cache src test",
