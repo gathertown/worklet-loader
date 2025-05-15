@@ -1,7 +1,7 @@
 {
   "name": "@gathertown/worklet-loader",
   "version": "3.0.0",
-  "author": "Walker Henderson",
+  "author": "Gather Presence, Inc. <engineering@gather.town>",
   "description": "worklet loader module for webpack",
   "repository": {
     "url": "git+https://github.com/gathertown/worklet-loader.git"
