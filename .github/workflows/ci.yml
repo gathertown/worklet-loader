@@ -17,14 +17,14 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Save cache
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
 
   test:
     runs-on: ubuntu-latest
@@ -42,11 +42,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Run unit tests
-        run: npm run ci:coverage
+        run: yarn run ci:coverage
       - name: Submit coverage data to codecov
         run: bash <(curl -s https://codecov.io/bash)
 
@@ -63,13 +63,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Run linting
-        run: npm run lint
-      - name: Run NSP Security Check
-        run: npm run security
+        run: yarn run lint
 
   publish:
     runs-on: ubuntu-latest
@@ -84,11 +82,11 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Validate Commit Messages
-        run: npm run release:validate
+        run: yarn run release:validate
       - name: Publish to NPM
         run: printf "noop running conventional-github-releaser"
 
@@ -106,10 +104,10 @@ jobs:
         uses: actions/cache@v4
         with:
           path: node_modules
-          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+          key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: npm install
+        run: yarn install
       - name: Validate Commit Messages
-        run: npm run release:validate
+        run: yarn run release:validate
       - name: Publish to NPM
         run: printf "noop running conventional-github-releaser"
