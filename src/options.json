@@ -1,14 +1,17 @@
 {
   "type": "object",
   "properties": {
+    "publicPath": {
+      "type": "string",
+      "description": "Specifies the public URL address of the output files when referenced in a browser."
+    },
     "name": {
-      "type": "string"
+      "type": "string",
+      "description": "The filename of entry chunks for web workers."
     },
     "inline": {
-      "type": "boolean"
-    },
-    "publicPath": {
-      "type": "string"
+      "type": "boolean",
+      "description": "Allow to inline the worklet as a BLOB."
     }
   },
   "additionalProperties": false

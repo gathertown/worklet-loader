@@ -1,1 +1,2 @@
-// w2 via worker options
+console.log('w2 via worker options');
+
