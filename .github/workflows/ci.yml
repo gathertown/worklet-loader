@@ -19,7 +19,7 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && corepack install && yarn install --immutable
       - name: Save cache
         uses: actions/cache@v4
         with:
@@ -44,7 +44,7 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && corepack install && yarn install --immutable
       - name: Run unit tests
         run: yarn run ci:coverage
       - name: Submit coverage data to codecov
@@ -65,7 +65,7 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && corepack install && yarn install --immutable
       - name: Run linting
         run: yarn run lint
 
@@ -84,7 +84,7 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && corepack install && yarn install --immutable
       - name: Validate Commit Messages
         run: yarn run release:validate
       - name: Publish to NPM
@@ -106,7 +106,7 @@ jobs:
           path: node_modules
           key: dependency-cache-${{ hashFiles('yarn.lock') }}
       - name: Install dependencies
-        run: yarn install
+        run: corepack enable && corepack install && yarn install --immutable
       - name: Validate Commit Messages
         run: yarn run release:validate
       - name: Publish to NPM
