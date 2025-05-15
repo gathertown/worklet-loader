@@ -47,8 +47,8 @@ jobs:
         run: corepack enable && corepack install && yarn install --immutable
       - name: Run unit tests
         run: yarn run ci:coverage
-      - name: Submit coverage data to codecov
-        run: bash <(curl -s https://codecov.io/bash)
+      # - name: Submit coverage data to codecov
+      #   run: bash <(curl -s https://codecov.io/bash)
 
   analysis:
     runs-on: ubuntu-latest

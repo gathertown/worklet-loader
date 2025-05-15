@@ -26,8 +26,8 @@
     "test:watch": "jest --watch",
     "test:coverage": "jest --collectCoverageFrom='src/**/*.js' --coverage",
     "ci:lint": "yarn run lint",
-    "ci:test": "yarn run test -- --runInBand",
-    "ci:coverage": "yarn run test:coverage -- --runInBand",
+    "ci:test": "yarn run test --runInBand",
+    "ci:coverage": "yarn run test:coverage --runInBand",
     "defaults": "webpack-defaults",
     "webpack-defaults": "webpack-defaults"
   },
