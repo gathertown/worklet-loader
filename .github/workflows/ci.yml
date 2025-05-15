@@ -1,0 +1,120 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    branches:
+      - master
+
+jobs:
+  dependency_cache:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Save cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v2
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run unit tests
+        run: npm run ci:coverage
+      - name: Submit coverage data to codecov
+        run: bash <(curl -s https://codecov.io/bash)
+
+  analysis:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Run linting
+        run: npm run lint
+      - name: Run NSP Security Check
+        run: npm run security
+
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Validate Commit Messages
+        run: npm run release:validate
+      - name: Publish to NPM
+        run: printf "noop running conventional-github-releaser"
+
+  validate-publish:
+    needs: [dependency_cache, test, analysis]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version-file: .nvmrc
+      - name: Restore cache
+        uses: actions/cache@v2
+        with:
+          path: node_modules
+          key: dependency-cache-${{ hashFiles('package-lock.json') }}
+      - name: Install dependencies
+        run: npm install
+      - name: Validate Commit Messages
+        run: npm run release:validate
+      - name: Publish to NPM
+        run: printf "noop running conventional-github-releaser"
