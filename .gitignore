@@ -14,3 +14,7 @@ Thumbs.db
 .vscode
 *.sublime-project
 *.sublime-workspace
+
+# Yarn
+.pnp.*
+.yarn/install-state.gz

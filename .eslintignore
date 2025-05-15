@@ -1,7 +1,0 @@
-test/fixtures
-test/__expected__
-
-src/worklets/InlineWorklet.js
-
-/node_modules
-/dist

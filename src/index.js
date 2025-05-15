@@ -7,35 +7,35 @@
   no-underscore-dangle,
   prefer-destructuring
 */
-import schema from './options.json';
-import loaderUtils from 'loader-utils';
-import validateOptions from 'schema-utils';
+import path from 'path';
 
-import NodeTargetPlugin from 'webpack/lib/node/NodeTargetPlugin';
-import SingleEntryPlugin from 'webpack/lib/SingleEntryPlugin';
+import schema from './options.json';
+import { getOptions, interpolateName } from 'loader-utils';
+import { validate } from 'schema-utils';
 
 import getWorker from './worklets/';
-import LoaderError from './Error';
 
 export default function loader() {}
 
 export function pitch(request) {
-  const options = loaderUtils.getOptions(this) || {};
-
-  validateOptions(schema, options, 'Worklet Loader');
-
-  if (!this.webpack) {
-    throw new LoaderError({
-      name: 'Worklet Loader',
-      message: 'This loader is only usable with webpack'
-    });
-  }
-
   this.cacheable(false);
+
+  const options = getOptions(this) || {};
+
+  validate(schema, options, {
+    name: 'Worklet Loader',
+    baseDataPath: 'options',
+  });
+
+  const { webpack } = this._compiler;
+  const {
+    EntryPlugin: SingleEntryPlugin,
+    node: { NodeTargetPlugin },
+  } = webpack;
 
   const cb = this.async();
 
-  const filename = loaderUtils.interpolateName(this, options.name || '[hash].worklet.js', {
+  const filename = interpolateName(this, options.name || '[hash].worklet.js', {
     context: options.context || this.rootContext || this.options.context,
     regExp: options.regExp,
   });
@@ -59,7 +59,11 @@ export function pitch(request) {
     new NodeTargetPlugin().apply(worker.compiler);
   }
 
-  new SingleEntryPlugin(this.context, `!!${request}`, 'main').apply(worker.compiler);
+  new SingleEntryPlugin(
+    this.context,
+    `!!${request}`,
+    path.parse(this.resourcePath).name,
+  ).apply(worker.compiler);
 
   const subCache = `subcache ${__dirname} ${request}`;
 
@@ -85,16 +89,16 @@ export function pitch(request) {
     if (err) return cb(err);
 
     if (entries[0]) {
-      worker.file = entries[0].files[0];
+      const [workerFilename] = [...entries[0].files];
 
       worker.factory = getWorker(
-        worker.file,
-        compilation.assets[worker.file].source(),
+        workerFilename,
+        compilation.assets[workerFilename].source(),
         options
       );
 
       if (options.inline) {
-        delete this._compilation.assets[worker.file];
+        delete this._compilation.assets[workerFilename];
       }
 
       return cb(null, `module.exports = ${worker.factory};`);
