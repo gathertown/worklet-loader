@@ -1,11 +1,13 @@
 {
-  "name": "worklet-loader",
+  "name": "@gathertown/worklet-loader",
   "version": "3.0.0",
-  "author": "Walker Henderson",
+  "author": "Gather Presence, Inc.",
   "description": "worklet loader module for webpack",
-  "repository": "https://github.com/reklawnos/worklet-loader.git",
-  "bugs": "https://github.com/reklawnos/worklet-loader/issues",
-  "homepage": "https://github.com/reklawnos/worklet-loader",
+  "repository": {
+    "url": "git+https://github.com/gathertown/worklet-loader.git"
+  },
+  "bugs": "https://github.com/gathertown/worklet-loader/issues",
+  "homepage": "https://github.com/gathertown/worklet-loader",
   "license": "MIT",
   "main": "dist/cjs.js",
   "files": [
