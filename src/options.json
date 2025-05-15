@@ -3,11 +3,11 @@
   "properties": {
     "publicPath": {
       "type": "string",
-      "description": "Specifies the public URL address of the output files when referenced in a browser."
+      "description": "Specifies the public URL address of the output files when referenced in a browser. Updated to use actions/cache@v4"
     },
     "name": {
       "type": "string",
-      "description": "The filename of entry chunks for web workers."
+      "description": "The filename of entry chunks for web workers. Updated to use actions/setup-node@v4"
     },
     "inline": {
       "type": "boolean",
